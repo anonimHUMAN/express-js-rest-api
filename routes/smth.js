@@ -2,7 +2,6 @@ const { Router } = require('express')
 const router = Router()
 const uuid = require('uuid')
 const nameAge = require('../Trash')
-const fs = require('fs');
 
 // Get name and age
 router.get('/', (req, res) => {
