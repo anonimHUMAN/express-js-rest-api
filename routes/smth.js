@@ -1,7 +1,7 @@
 const { Router } = require('express')
 const router = Router()
 const uuid = require('uuid')
-const nameAge = require('../Trash')
+let nameAge = require('../Trash')
 
 // Get name and age
 router.get('/', (req, res) => {
@@ -26,14 +26,14 @@ router.post('/', (req, res) => {
         name: req.body.name,
         age: req.body.age
     }
+    console.log(req.body);
+    nameAge.push(newPerson)
     if (!req.body.name || !req.body.age) {
-        return res.status(400).json({ message: `Please enter all data!!!` })
+        res.status(400).json({ message: `Please enter all data!!!` })
     } else {
-        return res.status(400).json({ message: `Something wrong!` })
+        res.status(400).json({ message: `Succsess`,data:nameAge })
     }
 
-    nameAge.push(newPerson)
-    res.json(nameAge)
 })
 
 // Edit by id
@@ -58,12 +58,12 @@ router.put('/:id', (req, res) => {
 
 // Delete by id
 router.delete('/:id', (req, res) => {
-    const isExist = nameAge.some(item => item.id === parseInt(req.params.id))
-
+    const isExist = nameAge.some(item => item.id == req.params.id)
     if (isExist) {
+        nameAge = nameAge.filter(item => item.id !== req.params.id)
         res.json({
             message: `Deleted...`,
-            nameAge: nameAge.filter(item => item.id !== parseInt(req.params.id))
+            nameAge
         })
     } else {
         res.status(404).json({ message: `This ${req.params.id} id not found😕` })
